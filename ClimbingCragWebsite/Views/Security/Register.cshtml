@@ -1,0 +1,40 @@
+﻿@model Register
+@{
+}
+<div class="Main-Content-Form">
+    <h2>Register as new User</h2>
+    <form method="post">
+        <table>
+            <tr>
+                <td><label asp-for="UserName"></label></td>
+                <td><input class="input-text" type="text" asp-for="UserName" /></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><label asp-for="Email"></label></td>
+                <td><input class="input-text" type="text" asp-for="Email" /></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><label asp-for="Password"></label></td>
+                <td><input class="input-text" type="password" asp-for="Password" /></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><label asp-for="ConfirmPassword"></label></td>
+                <td><input class="input-text" type="password" asp-for="ConfirmPassword" /></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td colspan="2">
+                    <button class="button" type="submit">Create Account</button>
+                </td>
+            </tr>
+            <div asp-validation-summary="All" class="warning"></div>
+        </table>
+    </form>
+</div>

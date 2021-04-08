@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="Home-Page-div">
+    <div class="Home-Page-Section">
+
+        @if (User.Identity.IsAuthenticated)
+        {
+            <h1> Hello @User.Identity.Name</h1>
+            <h2> Add Favourite Routes To View here</h2>
+        }
+        else
+        {
+            <h1>Welcome To UKCrag</h1>
+            <h2>Create an account to see favourites here</h2>
+        }
+    </div>
+</div>

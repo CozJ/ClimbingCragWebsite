@@ -1,0 +1,51 @@
+﻿.nav-toggle-label {
+    display: none;
+}
+
+header {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+}
+
+.logo-container {
+    grid-column: 1 / span 1;
+}
+
+nav {
+    all: unset;
+    grid-column: 3 / 4;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+nav ul {
+    display: flex;
+    justify-content: flex-end;
+}
+
+nav li:last-child {
+    padding-right: 2rem;
+}
+
+nav form > li{
+    padding-right: 2rem;
+}
+
+nav a {
+    opacity: 1;
+}
+
+.background-content {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    display: block;
+    background-image: url('../Images/Stannage.jpg');
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    transform: scaleX(-1);
+    background-repeat: no-repeat;
+}

@@ -1,0 +1,67 @@
+﻿@model ClimbingCragWebsite.Models.Crag
+@{
+    ViewData["Title"] = "NewCrag";
+}
+
+<div class="Main-Content-Form">
+    <h2>Modify Crag</h2>
+    <form asp-action="ModifyCrag">
+        <table>
+            <tr>
+                <td><input class="input-text" type="hidden" asp-for="CragId" /></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><label asp-for="CragName"></label></td>
+                <td><input class="input-text" type="text" asp-for="CragName" /></td>
+            </tr>
+        </table>
+        @* try and get this to work via map click *@
+        <table>
+            <tr>
+                <td><label asp-for="Longitude"></label></td>
+                <td><input class="input-text" type="text" asp-for="Longitude" /></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><label asp-for="Latitude"></label></td>
+                <td><input class="input-text" type="text" asp-for="Latitude" /></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><label asp-for="CragDescription"></label></td>
+                <td><textarea maxlength="255" wrap="soft" style="resize: none;" rows="5" class="input-text" type="text" asp-for="CragDescription"></textarea></td>
+            </tr>
+        </table>
+        @* try and get image to be uploaded at same time*@
+        <table>
+            <tr>
+                <td><label asp-for="ImageId"></label>   <select asp-for="ImageId" asp-items="(SelectList)@ViewData["Image"]"></select></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><label asp-for="Country"></label></td>
+                <td><input class="input-text" type="text" asp-for="Country" /></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><label asp-for="Region"></label></td>
+                <td><input class="input-text" type="text" asp-for="Region" /></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><label asp-for="County"></label></td>
+                <td><input class="input-text" type="text" asp-for="County" /></td>
+            </tr>
+        </table>
+        <div asp-validation-summary="All" class="warning"></div>
+        <button class="button" type="submit" value="Update">Modify Crag</button>     
+    </form>
+    <a class="button" style="text-align: center;" asp-action="DeleteCrag" asp-route-id="@Model.CragId">Delete Crag</a>
+</div>

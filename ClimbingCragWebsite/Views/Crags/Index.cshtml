@@ -1,0 +1,27 @@
+﻿@model List<ClimbingCragWebsite.Models.Crag>
+
+@{
+    ViewData["Title"] = "Crags";
+}
+
+<div class="Main-Content-Cms-index">
+
+    <div class="Page-Header">
+        <a button class="button" asp-action="NewCrag" >Create New Crag</a>
+    </div>
+
+    @foreach (var item in Model)
+    {
+    <div class="Crag-Cards">
+            <img class="card-img" src="~/Images/@item.Image.ImageUrl" alt="@item.Image.ImageDescription" />
+        <div class="card-body">
+            <div class="card-title">@item.CragName</div>
+            <div class="overline">@item.Country,<br>@item.Region,<br>@item.County</div>
+        </div>
+        <div class="card-footer">
+            <button class="button">View Crag</button>
+            <a class="button" asp-controller="Crags" asp-action="ModifyCrag" asp-route-id="@item.CragId">Modify Crag</a>
+        </div>
+    </div>
+    }
+</div>

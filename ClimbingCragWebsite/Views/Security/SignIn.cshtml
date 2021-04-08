@@ -1,0 +1,32 @@
+﻿@model SignIn
+@{ 
+}
+<div class="Main-Content-Form">
+    <h2>Sign In</h2>
+    <form asp-controller="Security" asp-action="SignIn" method="post">
+        <table>
+            <tr>
+                <td><label asp-for="UserName"></label></td>
+                <td><input class="input-text" type="text" asp-for="UserName" /></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><label asp-for="Password"></label></td>
+                <td><input class="input-text" type="password" asp-for="Password" /></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><label asp-for="RememberMe"></label>  <input type="checkbox" asp-for="RememberMe" /></td>
+            </tr>
+        </table>
+        <button class="button" type="submit">Log In</button>
+        <div asp-validation-summary="All" class="warning"></div>
+    </form>
+    <div>
+        <a asp-controller="Security" asp-action="Register">
+            <button class="button">Register</button>
+        </a>
+    </div>
+</div>
