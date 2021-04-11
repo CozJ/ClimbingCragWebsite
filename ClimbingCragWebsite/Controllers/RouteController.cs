@@ -1,5 +1,7 @@
 ﻿using ClimbingCragWebsite.Models;
+using ClimbingCragWebsite.Security;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,11 +17,13 @@ namespace ClimbingCragWebsite.Controllers
     {
         private readonly ukcdbContext _ukcdbContext;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly UserManager<AppIdentityUser> _userManager;
 
-        public RouteController(ukcdbContext ukcdbContext, IWebHostEnvironment env)
+        public RouteController(ukcdbContext ukcdbContext, IWebHostEnvironment env, UserManager<AppIdentityUser> userManager)
         {
             _ukcdbContext = ukcdbContext;
             _webHostEnvironment = env;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index(string sortOrder, string searchString)
@@ -30,7 +34,7 @@ namespace ClimbingCragWebsite.Controllers
 
             var routes = from r in _ukcdbContext.Routes.Include(i => i.Image).Include(c => c.Crag) select r;
 
-            if(!String.IsNullOrEmpty(searchString))
+            if (!String.IsNullOrEmpty(searchString))
             {
                 routes = routes.Where(c => c.RouteName.Contains(searchString));
             }
@@ -85,7 +89,7 @@ namespace ClimbingCragWebsite.Controllers
         {
             if (ModelState.IsValid)
             {
-                
+
 
                 Image newImage = new Image
                 {
@@ -110,7 +114,7 @@ namespace ClimbingCragWebsite.Controllers
                     RoutePitches = routeImage.Route.RoutePitches,
                     ImageId = newImage.ImageId,
                     DateAdded = DateTime.UtcNow,
-            };
+                };
                 _ukcdbContext.Add(newRoute);
                 await _ukcdbContext.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -210,6 +214,67 @@ namespace ClimbingCragWebsite.Controllers
                 _ukcdbContext.SaveChanges();
                 return RedirectToAction("Index");
             }
+        }
+
+        [HttpGet]
+        public IActionResult FavouriteRoute(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Route route = _ukcdbContext.Routes.Find(id);
+            var UserID = _userManager.GetUserId(User);
+
+            if (route == null)
+            {
+                return NotFound();
+            }
+
+            var favourite = (from f in _ukcdbContext.Favourites where (f.UserId == UserID && f.RouteId == route.RouteId) select f).FirstOrDefault();
+
+            if (favourite == null)
+            {
+                ViewData["followStatus"] = false;
+            }
+            else
+            {
+                ViewData["followStatus"] = true;
+            }
+            return View(route);
+        }
+
+        [HttpPost]
+        public IActionResult FavouriteRoute(int? id, bool followStatus)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Route route = _ukcdbContext.Routes.Find(id);
+            var UserID = _userManager.GetUserId(User);
+
+            if (route == null || UserID == null)
+            {
+                return NotFound();
+            }
+
+            if (followStatus == false)
+            {
+                _ukcdbContext.Favourites.Add(new Favourite { RouteId = route.RouteId, UserId = UserID });
+                _ukcdbContext.SaveChanges();
+            }
+            if (followStatus == true)
+            {
+                var favourite = (from f in _ukcdbContext.Favourites where (f.UserId == UserID && f.RouteId == route.RouteId) select f).FirstOrDefault();
+                _ukcdbContext.Favourites.Remove(favourite);
+                _ukcdbContext.SaveChanges();
+            }
+
+
+            return RedirectToAction("Index");
         }
 
         private bool RouteExists(int id)

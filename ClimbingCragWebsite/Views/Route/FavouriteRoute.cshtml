@@ -1,0 +1,31 @@
+﻿@model ClimbingCragWebsite.Models.Route
+
+@{
+    ViewData["Title"] = "FavouriteRoute";
+}
+
+<div class="Main-Content-Form">
+    <form method="post" asp-action="FavouriteRoute" asp-route-id="@Model.RouteId" asp-route-followStatus="@ViewData["followStatus"]">
+        <table>
+            <tr>
+                <td>
+                    <h2>Route ID: @Model.RouteId</h2>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>
+                    <h2>Favourite @Model.RouteName</h2>
+                </td>
+            </tr>
+        </table>
+        @if ((bool)ViewData["followStatus"]){
+            <input type="submit" value="unfollow" class="button" />
+        }
+        else{
+            <input type="submit" value="follow" class="button" />
+        }
+    </form>
+    <a class="button" asp-controller="crags" asp-action="index">Go Back</a>
+</div>

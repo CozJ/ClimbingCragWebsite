@@ -9,7 +9,7 @@
         @if (User.Identity.IsAuthenticated)
         {
             <h1> Hello @User.Identity.Name</h1>
-            <h2> Add Favourite Routes To View here</h2>
+            <h2> follow Routes To View here</h2>
         }
         else
         {
@@ -17,6 +17,8 @@
             <h2>Create an account to see favourites here</h2>
         }
     </div>
+    @if (User.Identity.IsAuthenticated)
+    {
     <div class="card-holder">
         @foreach (var item in Model)
         {
@@ -45,4 +47,5 @@
             </div>
         }
     </div>
+    }
 </div>
