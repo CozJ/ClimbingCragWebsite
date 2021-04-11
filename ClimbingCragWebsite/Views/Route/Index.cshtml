@@ -1,4 +1,4 @@
-﻿@model List<ClimbingCragWebsite.Models.Route>
+﻿@model PaginatedList<ClimbingCragWebsite.Models.Route>
 
 @{
     ViewData["Title"] = "Routes";
@@ -10,8 +10,8 @@
         <div class="Page-Header">
             <div>
                 <ul>
-                    <li><a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]">Sort By Name</a></li>
-                    <li><a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParam"]">Sort By Date Added</a></li>
+                    <li><a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Sort By Name</a></li>
+                    <li><a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Sort By Date Added</a></li>
                     <li><a asp-action="Index">Back to Full List</a></li>
                 </ul>
                 <input class="input-text" type="text" name="searchString" value="@ViewData["CurrentFilter"]" />
@@ -51,6 +51,26 @@
                     }
                 </div>
             </div>
+        }
+    </div>
+    <div>
+        @{
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+        }
+        @if (prevDisabled != "disabled")
+        {
+            <a asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@(Model.PageIndex - 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="button" style="max-width: 10rem;">Previous</a>
+        }
+        @if (nextDisabled != "disabled")
+        {
+            <a asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@(Model.PageIndex + 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="button" style="max-width: 10rem;"> Next</a>
         }
     </div>
 </div>

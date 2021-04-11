@@ -25,10 +25,21 @@ namespace ClimbingCragWebsite.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Index(string sortOrder, string searchString)
+        public async Task<IActionResult> Index(string sortOrder, string searchString, string currentFilter, int? pageNumber)
         {
+            ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParam"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["DateSortParam"] = sortOrder == "Date" ? "date_desc" : "Date";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
             ViewData["CurrentFilter"] = searchString;
 
             var crags = from c in _ukcdbContext.Crags.Include(c => c.Image) select c;
@@ -53,7 +64,9 @@ namespace ClimbingCragWebsite.Controllers
                     crags = crags.OrderBy(c => c.CragName);
                     break;
             }
-            return View(await crags.ToListAsync());
+
+            int pageSize = 5;
+            return View(await PaginatedList<Crag>.CreateAsync(crags.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         [AllowAnonymous]
