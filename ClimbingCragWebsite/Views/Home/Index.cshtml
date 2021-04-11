@@ -1,4 +1,5 @@
-﻿@{
+﻿@model List<ClimbingCragWebsite.Models.Route>
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -14,6 +15,34 @@
         {
             <h1>Welcome To UKCrag</h1>
             <h2>Create an account to see favourites here</h2>
+        }
+    </div>
+    <div class="card-holder">
+        @foreach (var item in Model)
+        {
+            <div class="Crag-Cards">
+                <a>
+                    <img class="card-img" src="~/Images/@item.Image.ImageUrl" alt="@item.Image.ImageDescription" />
+                </a>
+                <div class="card-body">
+                    <div class="card-title">@item.RouteName</div>
+                    <a asp-controller="Crags" asp-route-searchString="@item.Crag.CragName">
+                        <div class="overline"><b>@item.Crag.CragName</b></div>
+                    </a>
+                    <div class="overline">
+                        <b>Grade:</b> @item.RouteGrade
+                        <br><b>Height:</b> @item.RouteHeight M
+                        <br><b>Pitches:</b> @item.RoutePitches
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a class="button" asp-controller="Route" asp-action="RouteDetails" asp-route-id="@item.RouteId">View Route</a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a class="button" asp-controller="Route" asp-action="ModifyRoute" asp-route-id="@item.RouteId">Modify Crag</a>
+                    }
+                </div>
+            </div>
         }
     </div>
 </div>

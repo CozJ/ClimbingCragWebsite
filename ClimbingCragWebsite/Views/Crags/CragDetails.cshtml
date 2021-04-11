@@ -1,0 +1,55 @@
+﻿@model ClimbingCragWebsite.Models.Crag
+
+@{ 
+    Image cragImage = (Image)ViewData["cragImage"];
+    var cragRoutes = ViewData["cragRoutes"] as List<Route>;
+    var routeImages = ViewData["routeImages"] as List<Image>;
+}
+
+<div class="Main-Content-Details">
+    <div class="header">
+        <div class="card-title">@Model.CragName</div>
+        <img class="details-img" src="~/Images/@cragImage.ImageUrl" alt="@cragImage.ImageDescription"/>
+        <h6>Date Added - @Model.DateAdded</h6>
+    </div>
+    <div class="Description">
+        <div>
+            <h3>Crag Location</h3>
+            <ul style="list-style: none;">
+                <li>@Model.Country,</li>
+                <li>@Model.Region,</li>
+                <li>@Model.County</li>
+            </ul>
+            <h3>Crag Description</h3>
+            <p>@Model.CragDescription</p>
+        </div>
+    </div>
+</div>
+<div class="card-holder">
+    @foreach (var item in cragRoutes)
+    {
+        <div class="Crag-Cards" style=" height: 32rem;">
+            <a>
+                <img class="card-img" src="~/Images/@item.Image.ImageUrl" alt="@item.Image.ImageDescription" />
+            </a>
+            <div class="card-body">
+                <div class="card-title">@item.RouteName</div>
+                <a asp-controller="Crags" asp-action-id="@item.Crag.CragId">
+                    <div class="overline">@item.Crag.CragName</div>
+                </a>
+                <div class="card-subtitle">
+                    Grade: @item.RouteGrade
+                    <br>Height: @item.RouteHeight
+                    <br>Pitches: @item.RoutePitches
+                </div>
+            </div>
+            <div class="card-footer">
+                <a class="button" style="text-align: center" asp-controller="Route" asp-action="RouteDetails" asp-route-id="@item.RouteId">View Route</a>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a class="button" style="text-align: center" asp-controller="Route" asp-action="ModifyRoute" asp-route-id="@item.RouteId">Modify Crag</a>
+                }
+            </div>
+        </div>
+    }
+</div>

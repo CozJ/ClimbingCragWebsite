@@ -6,30 +6,51 @@
 
 <div class="Main-Content-Cms-index">
 
-    <div class="Page-Header">
-        <a button class="button" asp-action="NewRoute">Create New Route</a>
-    </div>
-
-    @foreach (var item in Model)
-    {
-        <div class="Crag-Cards" style="justify-content: flex-start; height: 34rem;">
-            <a>
-                <img class="card-img" src="~/Images/@item.Image.ImageUrl" alt="@item.Image.ImageDescription" />
-            </a>
-            <div class="card-body">
-                <div class="card-title">@item.RouteName</div>
-                <a asp-controller="Crags" asp-action-id="@item.Crag.CragId">
-                    <div class="overline">@item.Crag.CragName</div>
-                </a>
-                <div class="card-subtitle">Grade: @item.RouteGrade
-                    <br>Height: @item.RouteHeight
-                    <br>Pitches: @item.RoutePitches
-                </div>
+    <form asp-action="Index" method="get">
+        <div class="Page-Header">
+            <div>
+                <ul>
+                    <li><a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]">Sort By Name</a></li>
+                    <li><a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParam"]">Sort By Date Added</a></li>
+                    <li><a asp-action="Index">Back to Full List</a></li>
+                </ul>
+                <input class="input-text" type="text" name="searchString" value="@ViewData["CurrentFilter"]" />
             </div>
-            <div class="card-footer">
-                <button class="button">View Route</button>
-                <a class="button" asp-controller="Route" asp-action="ModifyRoute" asp-route-id="@item.RouteId">Modify Crag</a>
+            <div style="display: flex; flex-flow: row wrap">
+                <button class="button" style="max-width: 15rem;" type="submit" value="search">Search</button>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a class="button" style="max-width: 15rem;" asp-action="NewRoute">Create New Route</a>
+                }
             </div>
         </div>
-    }
+    </form>
+    <div class="card-holder">
+        @foreach (var item in Model)
+        {
+            <div class="Crag-Cards">
+                <a>
+                    <img class="card-img" src="~/Images/@item.Image.ImageUrl" alt="@item.Image.ImageDescription" />
+                </a>
+                <div class="card-body">
+                    <div class="card-title">@item.RouteName</div>
+                    <a asp-controller="Crags" asp-route-searchString="@item.Crag.CragName">
+                        <div class="overline"><b>@item.Crag.CragName</b></div>
+                    </a>
+                    <div class="overline">
+                        <b>Grade:</b> @item.RouteGrade
+                        <br><b>Height:</b> @item.RouteHeight M
+                        <br><b>Pitches:</b> @item.RoutePitches
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a class="button" asp-controller="Route" asp-action="RouteDetails" asp-route-id="@item.RouteId">View Route</a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a class="button" asp-controller="Route" asp-action="ModifyRoute" asp-route-id="@item.RouteId">Modify Crag</a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
 </div>

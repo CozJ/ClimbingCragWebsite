@@ -1,0 +1,30 @@
+﻿@model ClimbingCragWebsite.Models.Route
+
+@{
+    ViewData["Title"] = "DeleteCrag";
+}
+
+<div class="Main-Content-Form">
+    <form method="post" asp-action="ConfirmDeleteRoute" asp-route-id="@Model.RouteId">
+        <table>
+            <tr>
+                <td>
+                    <h2>Crag ID: @Model.RouteId</h2>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>
+                    <h2>Confirm Deletion of @Model.RouteName</h2>
+                    <h3 class="warning">- this action is irreversible</h3>
+                    <h3 class="warning">- linked routes will also be deleted</h3>
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="Delete" class="button" />
+    </form>
+    <a asp-controller="Route" asp-action="index">
+        <button class="button">Go Back</button>
+    </a>
+</div>

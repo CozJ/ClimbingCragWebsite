@@ -1,58 +1,70 @@
-﻿@model ClimbingCragWebsite.Models.Crag
+﻿@model ClimbingCragWebsite.Models.CragImage
 @{
     ViewData["Title"] = "NewCrag";
 }
 
 <div class="Main-Content-Form">
     <h2>New Crag</h2>
-    <form method="post" asp-action="NewCrag">
+    <form method="post" asp-action="NewCrag" enctype="multipart/form-data">
         <table>
             <tr>
-                <td><label asp-for="CragName"></label></td>
-                <td><input class="input-text" type="text" asp-for="CragName" /></td>
+                <td><label asp-for="Crag.CragName"></label></td>
+                <td><input class="input-text" type="text" asp-for="Crag.CragName" /></td>
             </tr>
         </table>
         @* try and get this to work via map click *@
         <table>
             <tr>
-                <td><label asp-for="Longitude"></label></td>
-                <td><input class="input-text" type="text" asp-for="Longitude" /></td>
+                <td><label asp-for="Crag.Longitude"></label></td>
+                <td><input class="input-text" type="text" asp-for="Crag.Longitude" /></td>
             </tr>
         </table>
         <table>
             <tr>
-                <td><label asp-for="Latitude"></label></td>
-                <td><input class="input-text" type="text" asp-for="Latitude" /></td>
+                <td><label asp-for="Crag.Latitude"></label></td>
+                <td><input class="input-text" type="text" asp-for="Crag.Latitude" /></td>
             </tr>
         </table>
         <table>
             <tr>
-                <td><label asp-for="CragDescription"></label></td>
-                <td><textarea maxlength="255" wrap="soft" style="resize: none;" rows="5" class="input-text" type="text" asp-for="CragDescription"></textarea></td>
+                <td><label asp-for="Crag.CragDescription"></label></td>
+                <td><textarea maxlength="255" wrap="soft" style="resize: none;" rows="5" class="input-text" type="text" asp-for="Crag.CragDescription"></textarea></td>
             </tr>
         </table>
         @* try and get image to be uploaded at some time*@
         <table>
             <tr>
-                <td><label asp-for="ImageId"></label>   <select asp-for="ImageId" asp-items="(SelectList)@ViewData["Image"]"></select></td>
+                <td><label asp-for="Image.ImageDescription"></label></td>
+                <td><input class="input-text" type="text" asp-for="Image.ImageDescription" /></td>
             </tr>
         </table>
         <table>
             <tr>
-                <td><label asp-for="Country"></label></td>
-                <td><input class="input-text" type="text" asp-for="Country" /></td>
+                <td>
+                    <label asp-for="Image.imageFile"></label>
+                </td>
+                <td>
+                    <input asp-for="Image.imageFile" id="ImageFile" />
+                    <label for="ImageFile">UploadFile</label>
+                </td>
             </tr>
         </table>
         <table>
             <tr>
-                <td><label asp-for="Region"></label></td>
-                <td><input class="input-text" type="text" asp-for="Region" /></td>
+                <td><label asp-for="Crag.Country"></label></td>
+                <td><input class="input-text" type="text" asp-for="Crag.Country" /></td>
             </tr>
         </table>
         <table>
             <tr>
-                <td><label asp-for="County"></label></td>
-                <td><input class="input-text" type="text" asp-for="County" /></td>
+                <td><label asp-for="Crag.Region"></label></td>
+                <td><input class="input-text" type="text" asp-for="Crag.Region" /></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><label asp-for="Crag.County"></label></td>
+                <td><input class="input-text" type="text" asp-for="Crag.County" /></td>
             </tr>
         </table>
         <div asp-validation-summary="All" class="warning"></div>

@@ -1,0 +1,29 @@
+﻿@model ClimbingCragWebsite.Models.Route
+
+@{ 
+    Image image = (Image)ViewData["routeImage"];
+}
+
+<div class="Main-Content-Details">
+    <div class="header">
+        <div class="card-title">@Model.RouteName</div>
+        <img class="details-img" src="~/Images/@image.ImageUrl" alt="@image.ImageDescription" />
+        <h6>Date Added - @Model.DateAdded</h6>
+        <a asp-action="Favourite"></a>
+    </div>
+    <div class="Description">
+        <div>
+            <h3>Crag Information</h3>
+            <ul style="list-style: none;">
+                <li>Grade: @Model.RouteGrade,</li>
+                <li>Height: @Model.RouteHeight M,</li>
+                <li>Pitches: @Model.RoutePitches</li>
+            </ul>
+            <h3>Route Description</h3>
+            <p>@Model.RouteDescription</p>
+        </div>
+        <form>
+            <button class="button" style="max-width: 13rem;">Favourite</button>
+        </form>
+    </div>
+</div>

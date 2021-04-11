@@ -1,0 +1,70 @@
+﻿@model ClimbingCragWebsite.Models.Route;
+
+@{
+    List<string> Grades = new List<string> { "4a", "4b", "4c", "5a", "5b", "5c", "6a", "6b", "6c", "7a", "7b", "7c", "8a", "8b", "8c", "9a", "9b", "9c" };
+}
+
+<div class="Main-Content-Form">
+    <h2>Modify Route</h2>
+    <form asp-action="ModifyRoute">
+        <table>
+            <tr>
+                <td><input class="input-text" type="hidden" asp-for="RouteId" /></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><label asp-for="RouteName"></label></td>
+                <td><input class="input-text" type="text" asp-for="RouteName" /></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><label asp-for="CragId"></label><select asp-for="CragId" asp-items="(SelectList)@ViewData["Crag"]"></select></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><label asp-for="ImageId"></label>   <select asp-for="ImageId" asp-items="(SelectList)@ViewData["Image"]"></select></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>
+                    <label asp-for="RouteGrade"></label><select asp-for="RouteGrade">
+                        @foreach (var grade in Grades)
+                        {
+                            <option value="@grade">@grade</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><label asp-for="RouteHeight"></label></td>
+                <td><input class="input-text" type="number" asp-for="RouteHeight" /></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><label asp-for="RouteDescription"></label></td>
+                <td><textarea maxlength="255" wrap="soft" style="resize: none;" rows="5" class="input-text" type="text" asp-for="RouteDescription"></textarea></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><label asp-for="RoutePitches"></label></td>
+                <td><input class="input-text" type="number" asp-for="RoutePitches" /></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><label asp-for="ImageId"></label>   <select asp-for="ImageId" asp-items="(SelectList)@ViewData["Image"]"></select></td>
+            </tr>
+        </table>
+        <div asp-validation-summary="All" class="warning"></div>
+        <button class="button" type="submit" value="Update">Modify Route</button>
+    </form>
+    <a class="button" style="text-align: center;" asp-action="DeleteRoute" asp-route-id="@Model.RouteId">Delete Crag</a>
+</div>

@@ -2,6 +2,7 @@
 using ClimbingCragWebsite.Security;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -30,11 +31,13 @@ namespace ClimbingCragWebsite.Controllers
             {
                 var UserID = _userManager.GetUserId(User);
 
-                var userFavourites = from fav in _ukcdbContext.Favourites where fav.UserId == UserID select fav;
+                var favourites = _ukcdbContext.Favourites.Where(c => c.UserId == UserID);
 
-                List<Favourite> model = userFavourites.ToList();
-                
-                return View(model);
+                var model = from r in _ukcdbContext.Routes.Include(r => r.Image).Include(c => c.Crag) select r;
+
+                model = model.Where(f => favourites.Any(r => f.RouteId == r.RouteId));
+
+                return View(model.ToList());
             }
             else
             {
