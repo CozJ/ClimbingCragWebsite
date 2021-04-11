@@ -166,11 +166,11 @@ namespace ClimbingCragWebsite.Models
 
             modelBuilder.Entity<Favourite>(entity =>
             {
-                entity.HasKey(e => e.RouteId);
+                entity.HasKey(e => e.RelationId);
 
-                entity.Property(e => e.RouteId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("RouteID");
+                entity.Property(e => e.RelationId).HasColumnName("RelationID");
+
+                entity.Property(e => e.RouteId).HasColumnName("RouteID");
 
                 entity.Property(e => e.UserId)
                     .IsRequired()

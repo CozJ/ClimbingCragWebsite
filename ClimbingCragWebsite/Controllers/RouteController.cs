@@ -1,5 +1,6 @@
 ﻿using ClimbingCragWebsite.Models;
 using ClimbingCragWebsite.Security;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -76,6 +77,7 @@ namespace ClimbingCragWebsite.Controllers
             return View(route);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult NewRoute()
         {
             ViewData["Image"] = new SelectList(_ukcdbContext.Images, "ImageId", "ImageDescription");
@@ -85,11 +87,11 @@ namespace ClimbingCragWebsite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> NewRoute(RouteImage routeImage)
         {
             if (ModelState.IsValid)
             {
-
 
                 Image newImage = new Image
                 {
@@ -125,6 +127,7 @@ namespace ClimbingCragWebsite.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ModifyRoute(int? id)
         {
             if (id == null)
@@ -145,6 +148,7 @@ namespace ClimbingCragWebsite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ModifyRoute(int id, Route route)
         {
             if (id != route.RouteId)
@@ -179,6 +183,7 @@ namespace ClimbingCragWebsite.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteRoute(int? id)
         {
             if (id == null)
@@ -198,6 +203,7 @@ namespace ClimbingCragWebsite.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult ConfirmDeleteRoute(int? id)
         {
             if (id == null)
@@ -217,6 +223,7 @@ namespace ClimbingCragWebsite.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult FavouriteRoute(int? id)
         {
             if (id == null)
@@ -246,6 +253,7 @@ namespace ClimbingCragWebsite.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult FavouriteRoute(int? id, bool followStatus)
         {
             if (id == null)

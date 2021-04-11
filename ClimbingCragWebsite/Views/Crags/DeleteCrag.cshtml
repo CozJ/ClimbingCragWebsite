@@ -13,6 +13,8 @@
                 </td>
             </tr>
         </table>
+        @if((bool)ViewData["Empty"])
+        {
         <table>
             <tr>
                 <td>
@@ -23,8 +25,11 @@
             </tr>
         </table>
         <input type="submit" value="Delete" class="button" />
-    </form>
-        <a asp-controller="crags" asp-action="index">
-            <button class="button">Go Back</button>
-        </a>
+        }
+        else
+        {
+        <h2>Routes Attached Cannot Delete</h2>
+        }
+</form>
+        <a asp-controller="crags" asp-action="index" class="button">Go Back</a>
 </div>

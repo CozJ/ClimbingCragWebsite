@@ -1,4 +1,5 @@
 ﻿using ClimbingCragWebsite.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,6 +24,7 @@ namespace ClimbingCragWebsite.Controllers
             _webHostEnvironment = env;
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
             ViewData["NameSortParam"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -54,13 +56,20 @@ namespace ClimbingCragWebsite.Controllers
             return View(await crags.ToListAsync());
         }
 
-        public async Task<IActionResult> Maps()
+        [AllowAnonymous]
+        public IActionResult Maps()
         {
-            var ukcragdbContext = _ukcdbContext.Crags.Include(c => c.Image);
-
-            return View(await ukcragdbContext.ToListAsync());
+            return View();
         }
 
+        [AllowAnonymous]
+        public JsonResult GetLocations()
+        {
+            List<Crag> crags = _ukcdbContext.Crags.ToList();
+            return Json(crags);
+        }
+
+        [AllowAnonymous]
         public async Task<IActionResult> CragDetails(int? id)
         {
             if (id == null)
@@ -82,6 +91,7 @@ namespace ClimbingCragWebsite.Controllers
             return View(crag);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult NewCrag()
         {
             ViewData["Image"] = new SelectList(_ukcdbContext.Images, "ImageId", "ImageDescription");
@@ -91,6 +101,7 @@ namespace ClimbingCragWebsite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> NewCrag(CragImage cragImage)
         {
             if (ModelState.IsValid)
@@ -131,6 +142,7 @@ namespace ClimbingCragWebsite.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ModifyCrag(int? id)
         {
             if (id == null)
@@ -150,6 +162,7 @@ namespace ClimbingCragWebsite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ModifyCrag(int id, Crag crag)
         {
             if (id != crag.CragId)
@@ -184,6 +197,7 @@ namespace ClimbingCragWebsite.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteCrag(int? id)
         {
             if (id == null)
@@ -198,10 +212,20 @@ namespace ClimbingCragWebsite.Controllers
                 return NotFound();
             }
             ViewData["Image"] = new SelectList(_ukcdbContext.Images, "ImageId", "ImageDescription", crag.ImageId);
+            var routes = _ukcdbContext.Routes.Where(c => c.CragId == crag.CragId).Count();
+            if (routes == 0)
+            {
+                ViewData["Empty"] = true;
+            }
+            else
+            {
+                ViewData["Empty"] = false;
+            }
             return View(crag);
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult ConfirmDeleteCrag(int? id)
         {
             if (id == null)
@@ -212,10 +236,10 @@ namespace ClimbingCragWebsite.Controllers
             {
                 Crag crag = _ukcdbContext.Crags.Find(id);
                 Image image = _ukcdbContext.Images.Find(crag.ImageId);
-                deleteImage(image);
                 _ukcdbContext.Crags.Remove(crag);
                 _ukcdbContext.Images.Remove(image);
                 _ukcdbContext.SaveChanges();
+                deleteImage(image);
                 return RedirectToAction("Index");
             }
         }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
@@ -15,11 +16,14 @@ namespace ClimbingCragWebsite.Models
             Routes = new HashSet<Route>();
         }
 
+        [Required]
         public int ImageId { get; set; }
+        [Required]
         public string ImageDescription { get; set; }
         public string ImageUrl { get; set; }
 
         [NotMapped]
+        [Required]
         public IFormFile imageFile { get; set; }
 
 
