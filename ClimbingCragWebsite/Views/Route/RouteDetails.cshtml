@@ -21,7 +21,10 @@
             </ul>
             <h3>Route Description</h3>
             <p>@Model.RouteDescription</p>
-        </div>            
+        </div>       
+        @if (User.Identity.IsAuthenticated)
+        {
         <a class="button" style="max-width: 13rem;" asp-controller="Route" asp-action="FavouriteRoute" asp-route-id="@Model.RouteId">follow/unfollow</a>
+        }
     </div>
 </div>
